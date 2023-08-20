@@ -140,12 +140,11 @@ app.put("/districts/:districtId/", async (request, response) => {
 //API - 7
 app.get("/states/:stateId/stats/", async (request, response) => {
   const { stateId } = request.params;
-  const getStats = `select cases as totalCases, cured as totalCured,
-    active as totalActive, deaths as totalDeaths from district 
-   where state_id = ${stateId}
-   group by state_id`;
+  const getStats = `select sum(cases) as totalCases, sum(cured) as totalCured,
+    sum(active) as totalActive, sum(deaths) as totalDeaths from district 
+   where state_id = ${stateId}`;
   const stats = await db.get(getStats);
-  console.log(stats);
+
   response.send(stats);
 });
 
