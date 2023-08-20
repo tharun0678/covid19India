@@ -71,7 +71,7 @@ app.post("/districts/", async (request, response) => {
         ${cured},
         ${active},
         ${deaths}
-    );`;
+    )`;
   await db.run(addNewDistrict);
   response.send(`District Successfully Added`);
 });
@@ -107,6 +107,56 @@ app.delete("/districts/:districtId/", async (request, response) => {
   await db.run(del);
 
   response.send(`District Removed`);
+});
+
+//API - 6
+
+app.put("/districts/:districtId/", async (request, response) => {
+  const districtDetails = request.body;
+  const { districtId } = request.params;
+  const {
+    districtName,
+    stateId,
+    cases,
+    cured,
+    active,
+    deaths,
+  } = districtDetails;
+  const updateDistrict = `
+    update district 
+    set district_name = '${districtName}',
+    state_id = ${stateId},
+    cases = ${cases},
+    cured = ${cured},
+    active = ${active},
+    deaths = ${deaths}; 
+    where 
+    district_id = ${districtId}`;
+
+  await db.run(updateDistrict);
+  response.send("District Details Updated");
+});
+
+//API - 7
+app.get("/states/:stateId/stats/", async (request, response) => {
+  const { stateId } = request.params;
+  const getStats = `select cases as totalCases, cured as totalCured,
+    active as totalActive, deaths as totalDeaths from district 
+   where state_id = ${stateId}
+   group by state_id`;
+  const stats = await db.get(getStats);
+  console.log(stats);
+  response.send(stats);
+});
+
+//API - 8
+app.get("/district/:districtId/details/", async (request, response) => {
+  const { districtId } = request.params;
+  const sName = `select state.state_name as stateName from state 
+    where state_id = (select state_id from district where district_id = ${districtId});`;
+
+  const stateName = await db.get(sName);
+  response.send(stateName);
 });
 
 module.exports = app;
