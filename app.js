@@ -149,7 +149,7 @@ app.get("/states/:stateId/stats/", async (request, response) => {
 });
 
 //API - 8
-app.get("/district/:districtId/details/", async (request, response) => {
+app.get("/districts/:districtId/details/", async (request, response) => {
   const { districtId } = request.params;
   const sName = `select state.state_name as stateName from state 
     where state_id = (select state_id from district where district_id = ${districtId});`;
