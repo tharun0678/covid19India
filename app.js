@@ -99,7 +99,7 @@ app.get("/districts/:districtId/", async (request, response) => {
   response.send(result);
 });
 
-//API - 5
+//API - 5 Delete district By district Id
 app.delete("/districts/:districtId/", async (request, response) => {
   const { districtId } = request.params;
   const del = `Delete from district where district_id = ${districtId};`;
@@ -109,7 +109,7 @@ app.delete("/districts/:districtId/", async (request, response) => {
   response.send(`District Removed`);
 });
 
-//API - 6
+//API - updating district by district Id
 
 app.put("/districts/:districtId/", async (request, response) => {
   const districtDetails = request.body;
@@ -137,7 +137,7 @@ app.put("/districts/:districtId/", async (request, response) => {
   response.send("District Details Updated");
 });
 
-//API - 7
+//API - 7 Total cases appeared in a state
 app.get("/states/:stateId/stats/", async (request, response) => {
   const { stateId } = request.params;
   const getStats = `select sum(cases) as totalCases, sum(cured) as totalCured,
@@ -148,7 +148,7 @@ app.get("/states/:stateId/stats/", async (request, response) => {
   response.send(stats);
 });
 
-//API - 8
+//API - 8 Getting the name of the state using district Id
 app.get("/districts/:districtId/details/", async (request, response) => {
   const { districtId } = request.params;
   const sName = `select state.state_name as stateName from state 
